@@ -1,0 +1,5 @@
+profile: service
+defaultPackage: micronaut.doma.test
+---
+testFramework: spek
+sourceLanguage: kotlin
