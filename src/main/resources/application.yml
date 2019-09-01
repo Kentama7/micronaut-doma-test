@@ -4,4 +4,8 @@ micronaut:
     name: micronaut-doma-test
 
 ---
-datasources.default: {}
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: password

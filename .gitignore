@@ -27,3 +27,4 @@ build
 out
 .DS_store
 .idea
+*.iml

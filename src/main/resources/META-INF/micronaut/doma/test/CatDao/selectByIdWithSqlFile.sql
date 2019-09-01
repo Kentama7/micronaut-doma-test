@@ -1,0 +1,1 @@
+select * from cat where id = /*id*/0

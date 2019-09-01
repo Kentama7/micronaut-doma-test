@@ -35,12 +35,18 @@ dependencies {
     kaptTest platform("io.micronaut:micronaut-bom:$micronautVersion")
     kaptTest "io.micronaut:micronaut-inject-java"
     runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
-    runtimeOnly "com.h2database:h2"
     runtimeOnly "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8"
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testImplementation "org.jetbrains.spek:spek-api:1.1.5"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
     testRuntimeOnly "org.jetbrains.spek:spek-junit-platform-engine:1.1.5"
+    
+    // for Doma2
+    kapt "org.seasar.doma:doma:2.25.1"
+    implementation "org.seasar.doma:doma:2.25.1"
+    // https://mvnrepository.com/artifact/org.postgresql/postgresql
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.6'
+//    implementation 'io.micronaut:micronaut-spring'
 }
 
 test.classpath += configurations.developmentOnly
@@ -75,4 +81,22 @@ compileTestKotlin {
 	    jvmTarget = '1.8' 
 	    javaParameters = true 
 	}
+}
+
+kapt {
+    arguments {
+        arg("doma.resources.dir", compileKotlin.destinationDir)
+    }
+}
+
+task copyDomaResources(type: Sync)  {
+    from sourceSets.main.resources.srcDirs
+    into compileKotlin.destinationDir
+    include 'doma.compile.config'
+    include 'META-INF/**/*.sql'
+    include 'META-INF/**/*.script'
+}
+
+compileKotlin {
+    dependsOn copyDomaResources
 }
